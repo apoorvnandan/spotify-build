@@ -34,7 +34,7 @@ export default function Song({ track, sno, setGlobalCurrentTrackId, setGlobalIsP
         );
     }
 
-    return <div onClick={async () => playSong(track.track.id, track.track.uri)} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} className="grid grid-cols-2 text-neutral-400 text-sm py-4 px-5 hover:bg-white hover:bg-opacity-10 rounded-lg cursor-pointer">
+    return <div onClick={async () => playSong(track.track.id, track.track.uri)} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} className="grid grid-cols-2 text-neutral-400 text-sm py-4 px-5 hover:bg-white hover:bg-opacity-10 rounded-lg cursor-default">
         <div className="flex items-center space-x-4">
             {hover ? <PlayIcon className="h-5 w-5 text-white" /> : <p className="w-5">{sno + 1}</p>}
             <img className="h-10 w-10" src={track.track.album.images[0]?.url} />

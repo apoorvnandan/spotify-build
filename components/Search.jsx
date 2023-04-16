@@ -1,11 +1,12 @@
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BrowseAlbums from './BrowseAlbums';
 import SearchResults from './SearchResults';
 
 const Search = ({ setView, setGlobalSelectedPlaylist }) => {
     const { data: session } = useSession()
+    const inputRef = useRef(null)
     const [inputValue, setInputValue] = useState("")
     const [searchData, setSearchData] = useState(null)
     const [featuredPlaylists, setFeaturedPlaylists] = useState([])
@@ -14,7 +15,7 @@ const Search = ({ setView, setGlobalSelectedPlaylist }) => {
         if (query == "") return
         const response = await fetch("https://api.spotify.com/v1/search?" + new URLSearchParams({
             q: query,
-            type: ["playlist"]
+            type: ["playlist", "track", "album", "artist"]
         }), {
             headers: {
                 Authorization: `Bearer ${session.user.accessToken}`
@@ -40,6 +41,7 @@ const Search = ({ setView, setGlobalSelectedPlaylist }) => {
         f()
     }, [session]);
 
+    useEffect(() => { inputRef.current.focus() }, [])
 
 
     return (
@@ -48,10 +50,10 @@ const Search = ({ setView, setGlobalSelectedPlaylist }) => {
                 className="relative text-white sticky top-0 h-20 z-10 text-4xl bg-neutral-900 p-8 flex items-center font-bold"
             >
                 <MagnifyingGlassIcon className="absolute top-7 left-10 h-6 w-6 text-neutral-800" />
-                <input value={inputValue} onChange={async (e) => {
+                <input ref={inputRef} value={inputValue} onChange={async (e) => {
                     setInputValue(e.target.value)
                     await updateSearchResults(e.target.value)
-                }} className="rounded-full bg-white w-96 pl-10 text-neutral-900 text-base py-2 font-normal outline-0" />
+                }} className="rounded-full bg-white w-96 pl-12 text-neutral-900 text-base py-2 font-normal outline-0" />
             </header>
             <div onClick={() => signOut()} className="absolute z-20 top-5 right-8 flex items-center bg-black bg-opacity-70 text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
                 <img className="rounded-full w-7 h-7" src={session?.user?.image} alt="profile picture" />
@@ -65,6 +67,8 @@ const Search = ({ setView, setGlobalSelectedPlaylist }) => {
                     setGlobalSelectedPlaylist={setGlobalSelectedPlaylist}
                 /> : <SearchResults
                     playlists={searchData?.playlists?.items}
+                    songs={searchData?.tracks?.items}
+                    artists={searchData?.artists?.items}
                     setView={setView}
                     setGlobalSelectedPlaylist={setGlobalSelectedPlaylist}
                 />}

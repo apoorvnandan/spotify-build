@@ -70,7 +70,7 @@ export default function Sidebar({ globalSelectedPlaylist, setGlobalSelectedPlayl
                     setGlobalSelectedPlaylist(playlist.id)
                     window.localStorage.setItem("current_playlist", playlist.id)
                     setView("playlist")
-                }} key={playlist.id} className="cursor-pointer hover:text-white w-48 truncate">{playlist.name}</p>
+                }} key={playlist.id} className="cursor-default hover:text-white w-48 truncate">{playlist.name}</p>
             })}
             <div className='h-32'></div>
         </div>
