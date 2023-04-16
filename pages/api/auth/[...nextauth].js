@@ -22,14 +22,15 @@ async function refreshAccessToken(token) {
         const params = new URLSearchParams()
         params.append("grant_type", "refresh_token")
         params.append("refresh_token", token.refreshToken)
-        const response = fetch("https://accounts.spotify.com/api/token", {
+        const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             headers: {
                 Authorization: 'Basic ' + (new Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET).toString('base64'))
             },
             body: params
         })
-        const refreshedToken = (await response).json()
+        console.log({ response })
+        const refreshedToken = await response.json()
         return {
             ...token,
             accessToken: refreshedToken.access_token,
@@ -73,9 +74,10 @@ export const authOptions = {
                 }
             }
             // if the user if already logged in
-            if (Date.now() < token.accessTokenExpires) {
+            if (token.accessToken != undefined && Date.now() < token.accessTokenExpires) {
                 return token
             }
+            console.log("refreshing token")
             return refreshAccessToken(token)
         },
         async session({ session, token }) {
