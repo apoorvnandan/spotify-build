@@ -23,7 +23,7 @@ const SearchResults = ({ playlists, songs, artists, setView, setGlobalSelectedPl
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold">Top result</h2>
                     <div className="rounded-md h-64 pr-8">
-                        <div onClick={() => openPlaylist(playlists[0].id)} className="relative group h-64 w-full bg-neutral-800 hover:bg-neutral-700 p-4 flex flex-col gap-6 rounded-md transition duration-500">
+                        <div onClick={() => openPlaylist(playlists[0].id)} className="cursor-default relative group h-64 w-full bg-neutral-800 hover:bg-neutral-700 p-4 flex flex-col gap-6 rounded-md transition duration-500">
                             <div className="opacity-0 group-hover:opacity-100 transition-all ease-in-out shadow-2xl duration-500 absolute z-10 h-12 w-12 flex items-center justify-center rounded-full bg-green-500 bottom-6 group-hover:bottom-8 right-8">
                                 <PlayIcon className="h-6 w-6 text-black" />
                             </div>
@@ -37,7 +37,7 @@ const SearchResults = ({ playlists, songs, artists, setView, setGlobalSelectedPl
                     <h2 className="text-xl font-bold">Songs</h2>
                     <div className="flex flex-col">
                         {songs.slice(0, 4).map((song) => {
-                            return <div key={song.id} className="w-full h-16 px-2 rounded-md flex items-center gap-4 hover:bg-neutral-700">
+                            return <div key={song.id} className="cursor-default w-full h-16 px-4 rounded-md flex items-center gap-4 hover:bg-neutral-700">
                                 <img className="h-10 w-10" src={song.album.images[0].url} />
                                 <div>
                                     <p>{song.name}</p>
